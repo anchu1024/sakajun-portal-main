@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>純ポータル</title>
+    <link rel="stylesheet" href="../src/style.css" />
+    <script src="../src/secure.js"></script>
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,1..1000&family=Shippori+Mincho+B1&family=Zen+Antique&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      src="https://kit.fontawesome.com/8d6743ff13.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body class="main-page">
+    <header>
+      <a href="../index.html"><img class="logo" src="../assets/logo.png" /></a>
+      <div class="header-code" title="パスワードを発行" id="password-manager">
+        <i class="fa-solid fa-ticket"></i>
+      </div>
+    </header>
+    <div class="main-catchphrase">
+      <pre class="main-thumbnail">
+Welcome to our website!
+純一の純一による純一のためのポータルサイトへようこそ!
+      </pre>
+      <p class="main-description">
+        ここでは我らの英語力を養ってくれたMr.坂本先生に敬意を表し、あなたの英語ライフがより豊かなものとなるようにあーだこーだするサイトです。
+      </p>
+    </div>
+    <h1>- プロジェクト -</h1>
+    <div class="line"></div>
+    <div class="projects">
+      <div class="project-packager">
+        <div class="project-title">単語テストシミュレーター</div>
+        <div class="project-line"></div>
+        <img
+          src="https://uploads.codesandbox.io/uploads/user/user_8wSt6f1xkDST7JXKpLoQmk/jqf--tango-test-thumbnail.png"
+          class="projects-thumbnail"
+        />
+        <p class="projects-descrip">
+          単語テストを自動生成して模擬試験できるプロジェクトです。<br />
+          試験前や小テスト前にどうぞ。
+        </p>
+        <a href="/pages/tango.html"
+          ><div class="project-button"><span>GOTO SITE</span></div></a
+        >
+      </div>
+
+      <div class="project-packager">
+        <div class="project-title">英単語和訳テストシミュレーター</div>
+        <div class="project-line"></div>
+        <img
+          src="https://uploads.codesandbox.io/uploads/user/user_8wSt6f1xkDST7JXKpLoQmk/titT-tango-wayaku-test-thumbnail.png"
+          class="projects-thumbnail"
+        />
+        <p class="projects-descrip">
+          和訳単語テストを自動生成して模擬試験できるプロジェクトです。<br />
+          試験前にどうぞ。なお正答誤答判定の精度は低いので自己補完して使ってください。<br />
+        </p>
+        <a href="/pages/tango2.html"
+          ><div class="project-button"><span>GOTO SITE</span></div></a
+        >
+      </div>
+    </div>
+    <div id="password-holder">
+      
+    </div>
+    <script>
+      const pin_mgr = document.getElementById("password-manager");
+      pin_mgr.addEventListener("click", () => {});
+    </script>
+  </body>
+</html>

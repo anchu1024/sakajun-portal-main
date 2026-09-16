@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="google" content="notranslate" />
+    <title>単語暗記ツール</title>
+    <link rel="stylesheet" href="../src/style.css" />
+    <link rel="stylesheet" href="../src/trainer/style.css" />
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=DM+Serif+Text:ital@0;1&family=Zen+Antique&display=swap"
+      rel="stylesheet"
+    />
+    <script src="../src/utils/dom.js"></script>
+  </head>
+  <body class="project trainer">
+    <header>
+      <a href="./main.html" class="link-to-main"
+        ><img class="logo" src="../assets/logo.png"
+      /></a>
+      <h1>単語暗記ツール</h1>
+    </header>
+    <div class="option-holder"></div>
+    <div class="details">
+      <div class="back" onclick="UI.goBackToLists()" data-ignore="true">
+        戻る
+      </div>
+      <div class="title"></div>
+      <div class="graph-binder"></div>
+      <div class="button-holder"></div>
+    </div>
+    <script>
+      $(".details").hide();
+    </script>
+    <div class="test">
+      <div class="back" onclick="UI.goBackToDetails(true)">やめる</div>
+      <div class="time"></div>
+      <div class="problem"></div>
+      <div class="answer-sheet"></div>
+    </div>
+    <script src="../src/trainer/data.js"></script>
+    <script src="../src/trainer/ui.js"></script>
+  </body>
+</html>

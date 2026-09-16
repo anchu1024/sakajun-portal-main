@@ -1,0 +1,709 @@
+/*
+マクロなどの定義場所
+*/
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    top: 0px;
+  }
+
+  to {
+    opacity: 1;
+    top: 20px;
+  }
+}
+
+@keyframes slide-out {
+  from {
+    opacity: 1;
+    top: 20px;
+  }
+
+  to {
+    opacity: 0;
+    top: 0px;
+  }
+}
+
+@keyframes shine {
+  from {
+    background-position: 100% 50%;
+  }
+
+  to {
+    background-position: 0% 50%;
+  }
+}
+
+/*
+ここはbodyのスタイルの定義場所
+*/
+
+body {
+  background: white;
+  padding: 0px;
+  margin: 0px;
+  position: relative;
+}
+
+.auth-page {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.auth-faild {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/*
+ヘッダーのスタイル定義場所
+*/
+header {
+  background: black;
+  position: sticky;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 110px;
+  margin: 0px !important;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 0px 10px;
+  justify-content: space-between;
+  z-index: 10000;
+}
+
+.logo {
+  width: 100px;
+  height: 100px;
+}
+
+header i {
+  color: white;
+  font-size: 60px;
+  display: inline-block;
+  line-height: 1;
+}
+
+.header-code {
+  cursor: pointer;
+}
+
+/*
+ログイン画面のスタイル定義場所
+*/
+.login-main {
+  width: 100vw;
+  height: calc(100vh - 300px);
+  min-height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 0px;
+  margin: 0px;
+  padding: 0px;
+}
+
+/*
+拒否ページのスタイル定義場所
+*/
+.error-img {
+  margin: 20px;
+}
+
+/*
+全サイト共通の便利スタイル定義場所
+*/
+.flex-br {
+  width: 100%;
+  height: auto;
+  display: block;
+  text-align: center;
+  justify-content: inherit;
+  align-items: inherit;
+}
+
+/*
+メインページスタイル定義場所
+*/
+.main-catchphrase {
+  width: 100%;
+  height: auto;
+  margin: 0 !important;
+  padding: 20px !important;
+  box-sizing: border-box;
+  background: #343434;
+  color: white;
+}
+
+.main-thumbnail {
+  width: 100%;
+  font-size: max(2.5vw, 15px);
+  font-family: "Zen Antique", serif;
+  font-weight: 400;
+  font-style: normal;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+.main-description {
+  font-size: max(1.2vw, 10px);
+  font-family: "Shippori Mincho B1", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.main-page h1 {
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+  font-size: max(3vw, 30px);
+  font-family: "Zen Antique", serif;
+}
+
+header h1 {
+  color: white;
+  width: 100%;
+  padding-left: 30px;
+  box-sizing: border-box;
+
+  font-family: "Hiragino Kaku Gothic", serif;
+}
+
+.projects {
+  width: 100%;
+  height: auto;
+  gap: 20px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 10px 0px 10px 0px;
+}
+
+.project-packager {
+  width: 500px;
+  max-width: 80vw;
+  height: auto;
+  aspect-ratio: 3 / 4;
+  padding: 10px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  background: #ddd;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: black 0px 3px 0px;
+  transition: box-shadow 200ms;
+}
+
+.project-packager:hover {
+  box-shadow: black 0px 3px 5px;
+  transition: box-shadow 200ms;
+}
+
+.project-title {
+  width: 100%;
+  height: auto;
+  font-size: max(2vw, 20px);
+  font-family: serif;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 5px;
+}
+
+.project-line {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  margin-left: 0px !important;
+  margin-right: 0px !important;
+}
+
+.project-line:before {
+  width: 80%;
+  content: "";
+  height: 2px;
+  background: #555555;
+}
+
+.project-button {
+  --pad-y: 0.6rem;
+  --pad-x: 1.1rem;
+  --radius: 0px;
+  position: relative;
+  display: inline-block;
+  padding: var(--pad-y) var(--pad-x);
+  background: #ffffff; /* 初期は白背景 */
+  color: #000000; /* 初期文字色は黒 */
+  border: 1px solid #000; /* 外枠 */
+  border-radius: var(--radius);
+  font-weight: 600;
+  cursor: pointer;
+  overflow: hidden;
+  font-family: "Google Sans Flex", sans-serif;
+  letter-spacing: 0.2em;
+  width: auto;
+  height: auto;
+  font-size: max(5%, 20px);
+  -webkit-tap-highlight-color: transparent;
+  transition: color 260ms ease, border-color 260ms ease;
+}
+
+/* 中のテキストを前面に置く */
+.project-button > span {
+  position: relative;
+  z-index: 2;
+  display: inline-block;
+  transition: color 260ms ease;
+}
+
+/* 擬似要素（黒い塗り） */
+.project-button::after {
+  content: "";
+  position: absolute;
+  inset: 0; /* top/right/bottom/left = 0 */
+  background: #000000; /* ホバーで現れる色 */
+  transform-origin: left center;
+  transform: scaleX(0); /* 初期は見えない（横方向に縮める） */
+  z-index: 1; /* テキストの後ろに配置 */
+  transition: transform 320ms cubic-bezier(0.7, 0, 0, 0.7);
+}
+
+/* ホバー／フォーカス時 */
+.project-button:hover::after,
+.project-button:focus-visible::after {
+  transform: scaleX(1); /* 左から右へ広がる */
+}
+
+.project-button:hover > span,
+.project-button:focus-visible > span {
+  color: #ffffff; /* 文字色を反転 */
+}
+
+/* フォーカス表示（キーボード操作用） */
+.project-button:focus-visible {
+  outline: 3px solid rgba(0, 0, 0, 0.12);
+  outline-offset: 3px;
+}
+
+/* モーションを抑えたいユーザー向け */
+@media (prefers-reduced-motion: reduce) {
+  .project-button,
+  .project-button > span,
+  .project-button::after {
+    transition: none;
+  }
+  .project-button::after {
+    transform: none;
+    opacity: 0;
+  } /* アニメを無効にして代替表示 */
+  .project-button:hover::after,
+  .project-button:focus-visible::after {
+    opacity: 1;
+  } /* ホバーで即座に表示 */
+}
+
+/*
+プロジェクトページの基本スタイル定義場所
+*/
+
+.project * {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+header * {
+  margin: 0 !important;
+}
+
+.project > h1 {
+  font-size: max(2.5vw, 20px);
+  font-family: sans-serif;
+  color: black;
+  width: 100%;
+  margin-left: 0px !important;
+  margin-right: 0px !important;
+  text-align: center;
+}
+
+.line {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  margin-left: 0px !important;
+  margin-right: 0px !important;
+}
+
+.line:before {
+  width: 80%;
+  content: "";
+  height: 5px;
+  background: #555555;
+}
+
+.project .line[data-color="red"]:before {
+  background: #d55 !important;
+}
+
+button {
+  width: auto;
+  background: #44aaaa;
+  color: white;
+  padding: 5px;
+  border-radius: 2px;
+  font-size: max(1.2vw, 15px);
+}
+
+.message-pop-up {
+  position: fixed;
+  top: 0px;
+  left: 50%;
+  width: auto;
+  height: auto;
+  padding: 8px;
+  border-radius: 5px;
+  transform: translateX(-50%);
+  z-index: 20000;
+  opacity: 0;
+  animation: slide-in 500ms forwards;
+}
+
+.message-error {
+  background: #fdd;
+  border: 2px solid #a44;
+  color: #a44;
+}
+
+.message-info {
+  background: #dff;
+  border: 2px solid #44a;
+  color: #44a;
+}
+
+.message-warn {
+  background: #ffd;
+  border: 2px solid #aa4;
+  color: #aa4;
+}
+
+.message-normal {
+  background: #eee;
+  border: 2px solid black;
+  color: black;
+}
+
+.change-log {
+  width: 100%;
+  padding: 0px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+  margin-top: 50px;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.change-log > h1 {
+  width: auto;
+  text-align: center;
+  font-size: max(2vw, 20px);
+}
+
+.change-log article {
+  width: 90%;
+  background: #eee;
+  box-shadow: 0px 3px 0px black;
+  border-radius: 8px;
+  padding: 8px;
+  margin: 8px;
+  box-sizing: border-box;
+}
+
+.change-log article:hover {
+  transition: box-shadow 200ms;
+  box-shadow: 0px 3px 5px black;
+  cursor: text;
+}
+
+.change-log article version {
+  font-size: max(1vw, 15px);
+  font-family: sans-serif;
+  font-style: italic;
+}
+
+.info-label {
+  width: 90%;
+  height: auto;
+  padding: 20px;
+  font-size: max(1.5vw, 18px);
+  color: white;
+  background: #1cb0f6;
+  border-radius: 5px;
+  margin: 8px auto;
+  box-shadow: #0f4791 0px 3px 0px;
+}
+
+.info-label-link {
+  text-decoration: underline;
+  position: relative;
+  color: white;
+  transition: color 320ms cubic-bezier(0.7, 0, 0, 0.7);
+}
+
+.info-label-link:hover {
+  color: #1cb0f6;
+  transition: color 320ms cubic-bezier(0.7, 0, 0, 0.7);
+}
+
+.info-label-link > span {
+  position: relative;
+  z-index: 3;
+}
+
+.info-label-link::before {
+  width: 100%;
+  height: 0px;
+  position: absolute;
+  bottom: 0px;
+  content: "";
+  background: white;
+  transition: height 320ms cubic-bezier(0.7, 0, 0, 0.7);
+  z-index: 0;
+}
+
+.info-label-link:hover::before {
+  height: 100%;
+  transition: height 320ms cubic-bezier(0.7, 0, 0, 0.7);
+}
+
+/*
+単語ツールのスタイル定義場所
+*/
+.tango-test {
+  width: 100%;
+  margin: 0px !important;
+  padding: 0px !important;
+  opacity: 0;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  animation: fade-in 600ms ease forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tango-test {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+.tango-question {
+  width: 95%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 5px 0px 5px 0px !important;
+  border-radius: 5px;
+  padding: 5px;
+  background: transparent;
+}
+
+.tango-question:focus-within {
+  background: #ddd;
+}
+
+.tango-question-correct {
+  background: #7f7 !important;
+}
+
+.tango-question-correct:focus-within {
+  background: #5d5 !important;
+}
+
+.tango-question-fail {
+  background: #f77 !important;
+}
+
+.tango-question-fail:focus-within {
+  background: #d55 !important;
+}
+
+.tango-question-prob {
+  font-size: max(1.5vw, 15px);
+  translate: no;
+}
+
+.tango-answer-box {
+  height: max(2.5vw, 20px);
+  font-size: calc(max(2.5vw, 20px) * 0.9);
+  font-family: "Courier Prime", "Zen Antique", monospace;
+}
+
+#form1 {
+  font-size: max(1.5vw, 15px);
+}
+
+#fav {
+  height: 1.5vw;
+  min-height: 15px;
+}
+
+#check {
+  display: block;
+  margin: 10px auto;
+  font-size: max(2vw, 20px) !important;
+}
+
+.tango-correct-answer {
+  color: #300;
+  font-size: max(1.5vw, 15px);
+  width: 100vw;
+  text-align: right;
+}
+
+.tango-result-overview {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 60vw;
+  height: min(90vw, 95vh);
+  transform: translate(-50%, -50%);
+  background: #ddd;
+  overflow: scroll;
+  margin: 0 !important;
+  padding: 8px !important;
+  border-radius: 10px;
+  box-shadow: 0px 8px 20px black;
+  box-sizing: border-box;
+  z-index: 15000;
+  opacity: 0;
+  animation: fade-in 400ms ease forwards;
+}
+
+.tango-result-overview * {
+  margin: 10px 0 10px 0;
+  padding: 0 !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tango-result-overview {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+.tango-result-overview-title {
+  width: 100%;
+  text-align: center;
+  font-size: max(2vw, 20px);
+}
+
+.tango-result-percentage {
+  width: auto;
+  height: 15px;
+  border-radius: 5px;
+  margin: 10px 10% 10px 10%;
+  display: flex;
+  background: black;
+  overflow: hidden;
+}
+
+.tango-result-ac-per {
+  height: 100%;
+  margin: 0 !important;
+  padding: 0;
+  background: #5d5;
+}
+
+.tango-result-wa-per {
+  height: 100%;
+  margin: 0 !important;
+  padding: 0;
+  background: #d55;
+}
+
+.tango-result-accuracy {
+  width: auto;
+  text-align: center;
+  font-size: max(1.5vw, 15px);
+}
+
+.tango-result-wa-ans {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  background: #f005;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.tango-result-wa-ans-title {
+  font-size: max(2vw, 20px);
+}
+
+.tango-result-wa-ans-line {
+  margin: 5px 0 5px 0 !important;
+}
+
+.tango-result-wa-ans-list {
+  width: calc(100% - 10px * 2);
+}
+
+.tango-result-close-btn {
+  position: sticky;
+  bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px !important;
+  font-size: max(2vw, 20px);
+}
+
+.congra-msg {
+  width: 100%;
+  height: 50%;
+  margin-top: 30px;
+  padding: 0 auto;
+  box-sizing: border-box;
+  text-align: center;
+  alignment-baseline: middle;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: max(4vw, 20px);
+  font-family: "DM Serif Text", serif;
+  color: transparent;
+  background-image: linear-gradient(
+    70deg,
+    gold 45%,
+    white 50%,
+    white 55%,
+    gold 55%
+  );
+  background-size: 500% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  animation: shine 3s infinite 1s;
+  filter: drop-shadow(0 0 2px black);
+}

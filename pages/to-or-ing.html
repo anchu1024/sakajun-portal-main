@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>不定詞・動名詞テスター</title>
+    <link rel="stylesheet" href="../src/style.css" />
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=DM+Serif+Text:ital@0;1&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="project to-ing">
+    <header>
+      <a href="./main.html" class="link-to-main"
+        ><img class="logo" src="../assets/logo.png"
+      /></a>
+    </header>
+    <h1>不定詞・動名詞テスター</h1>
+    <div class="line"></div>
+    <p>
+      基本は3年2学期英作文演習⑥ (動名詞)の裏側と同じ形式で出題されます<br />
+      まず、範囲を選択し、作成ボタンをクリックします。出てきた問題では左が問題文、右が解答欄です。解答欄はタップすることで入力できるようになります。<br />
+      TabキーまたはEnterキーで次の解答欄にシフトします。便利なので使ってみてください!<br />
+      全部解けたら一番下の答え合わせボタンを押してください。<br />
+      なお、対義語などは半角スペースで区切ってください。<br />
+      なにか問題が起きたなら<a
+        href="https://mail.google.com/mail/?view=cm&fs=1&to=s64005@salesio-gakuin.ac.jp&su=単語テストツールについて&body=坂純ポータル単語テストツールについて"
+        target="_blank"
+        rel="noopener norefferer"
+        >メール</a
+      >にてお問い合わせください。<br />
+    </p>
+    <script>
+      if (sessionStorage.getItem("isAllowed") != "Yes") {
+        document.querySelector(".link-to-main").remove();
+      }
+    </script>
+  </body>
+</html>

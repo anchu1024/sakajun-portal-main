@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="google" content="notranslate" />
+    <title>単語テストシミュレーター</title>
+    <link rel="stylesheet" href="../src/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=DM+Serif+Text:ital@0;1&family=Zen+Antique&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* 追加の簡易スタイル（必要に応じてstyle.cssに移動してください） */
+      .mode-select {
+        margin: 15px 0;
+      }
+      .mode-select label {
+        margin-right: 15px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body class="project tango">
+    <header>
+      <a href="./main.html" class="link-to-main"
+        ><img class="logo" src="../assets/logo.png"
+      /></a>
+    </header>
+    <h1>単語テストシミュレーター</h1>
+    <div class="line"></div>
+    <p>
+      登録された単語からランダムな順番でテストを出題します。<br />
+      出題形式（A→B、または
+      B→A）を選択し、作成ボタンをクリックしてください。左が問題文、右が解答欄になります。<br />
+      TabキーまたはEnterキーで次の解答欄にシフトします。<br />
+      全部解けたら一番下の答え合わせボタンを押してください。<br />
+    </p>
+
+    <form id="form1">
+      <div class="mode-select">
+        <label>出題形式を選択してください：</label><br />
+        <label>
+          <input type="radio" name="mode" value="AtoB" checked />
+          A → B (キーが問題、値が解答)
+        </label>
+        <label>
+          <input type="radio" name="mode" value="BtoA" />
+          B → A (値が問題、キーが解答)
+        </label>
+      </div>
+      <button type="submit">作成</button>
+      <div class="tango-test-pack"></div>
+    </form>
+
+    <script>
+      // ==========================================
+      // 【データ設定エリア】
+      // ここにテスト用の単語データを入力してください。
+      // 個数は自由です（15個じゃなくてもOKです）。
+      // ==========================================
+      const tangoData = {
+        国連貿易開発会議: "UNCTAD",
+        国連環境計画: "UNEP",
+        国連難民高等弁務官事務所: "UNHCR",
+        国連児童基金: "UNICEF",
+        国連世界食糧計画: "WFP",
+        国連大学: "UNU",
+        国際原子力機関: "IAEA",
+        世界貿易機関: "WTO",
+        国連食糧農業機関: "FAO",
+        国際労働機関: "ILO",
+        国際通貨基金: "IMF",
+        国連教育科学文化機関: "UNESCO",
+        世界保健機関: "WHO",
+        国際復興開発銀行: "IBRD",
+      };
+
+      // ==========================================
+      // 以降はシステムロジックです
+      // ==========================================
+
+      // 権限チェック（元コード維持）
+      if (sessionStorage.getItem("isAllowed") != "Yes") {
+        const linkToMain = document.querySelector(".link-to-main");
+        if (linkToMain) linkToMain.remove();
+      }
+
+      window.onerror = (e) => {
+        document.body.appendChild(
+          document.createTextNode(e.toString() + e.stack)
+        );
+      };
+
+      document.getElementById("form1").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const mode = document.querySelector('input[name="mode"]:checked').value;
+
+        if (Object.keys(tangoData).length === 0) {
+          error("単語データが登録されていません。");
+          return;
+        }
+        createTest(mode);
+      });
+
+      // Enter/Tabキーでのカーソル移動
+      window.addEventListener("keydown", (e) => {
+        const el = e.target;
+        if (!el || !el.classList || !el.classList.contains("tango-answer-box"))
+          return;
+
+        if (e.key === "Enter" || e.key === "Tab") {
+          e.preventDefault();
+          const inputs = Array.from(
+            document.querySelectorAll(".tango-answer-box")
+          );
+          const idx = inputs.indexOf(el);
+
+          if (idx === -1) {
+            if (el === document.querySelector("#check")) el.click();
+            return;
+          }
+
+          if (!e.shiftKey) {
+            const next = inputs[idx + 1];
+            if (next) {
+              next.focus();
+              next.select();
+            } else {
+              const submit = document.querySelector("#check");
+              if (submit) submit.focus();
+            }
+          } else {
+            if (idx <= 0) return;
+            const prev = inputs[idx - 1];
+            if (prev) {
+              prev.focus();
+              prev.select();
+            }
+          }
+        }
+      });
+
+      function createTest(mode) {
+        // キーの一覧から全要素を抽出し、シャッフルする
+        const keys = Object.keys(tangoData);
+        const pickedKeys = randomPick(keys, keys.length);
+
+        const questions = [];
+        const expectedAnswers = [];
+
+        // モードに応じて問題と解答の配列を生成
+        for (const k of pickedKeys) {
+          if (mode === "AtoB") {
+            questions.push(k);
+            expectedAnswers.push(tangoData[k]);
+          } else {
+            // BtoA
+            questions.push(tangoData[k]);
+            expectedAnswers.push(k);
+          }
+        }
+
+        // 【変更】第3引数として mode を渡す
+        createUI(questions, expectedAnswers, mode);
+      }
+
+      // 【変更】引数に mode を追加
+      function createUI(questions, expectedAnswers, mode) {
+        const pre_test = document.querySelector(".tango-test");
+        if (pre_test) pre_test.remove();
+
+        const base = document.createElement("div");
+        base.classList.add("tango-test");
+
+        for (let i = 0; i < questions.length; i++) {
+          const questionBlock = document.createElement("div");
+          questionBlock.classList.add("tango-question");
+
+          const problem = document.createElement("div");
+          problem.classList.add("tango-question-prob");
+          problem.translate = "no";
+          problem.textContent = questions[i];
+
+          const answerBox = document.createElement("input");
+          answerBox.type = "text";
+          answerBox.classList.add("tango-answer-box");
+          answerBox.setAttribute("spellcheck", "false");
+          answerBox.setAttribute("autocorrect", "off");
+          answerBox.setAttribute("autocapitalize", "off");
+          answerBox.setAttribute("autocomplete", "off");
+          answerBox.setAttribute("data-lt-active", "false");
+
+          // 【変更】AtoBモード（解答がアルファベットの想定）のときのみ大文字変換を適用
+          if (mode === "AtoB") {
+            answerBox.addEventListener("input", function (e) {
+              this.value = this.value.toUpperCase();
+            });
+          }
+
+          questionBlock.appendChild(problem);
+          questionBlock.appendChild(answerBox);
+          base.appendChild(questionBlock);
+        }
+
+        const submit = document.createElement("button");
+        submit.id = "check";
+        submit.textContent = "答え合わせ";
+        base.appendChild(submit);
+        document.querySelector(".tango-test-pack").appendChild(base);
+
+        // 答え合わせ処理
+        submit.addEventListener("click", (e) => {
+          e.preventDefault();
+          submit.remove();
+
+          const inputs = document.querySelectorAll(".tango-answer-box");
+          const question_els = document.querySelectorAll(".tango-question");
+
+          let ac_count = 0;
+          let wa_count = 0;
+          const wa_answers = [];
+          const totalQuestions = questions.length; // 動的な問題数を取得
+
+          for (let i = 0; i < totalQuestions; i++) {
+            const inputVal = inputs[i].value;
+            inputs[i].setAttribute("readonly", "true");
+
+            // 空白除去と小文字化をして比較（柔軟な判定）
+            const isCorrect =
+              inputVal.trim().toLowerCase() ===
+              expectedAnswers[i].trim().toLowerCase();
+
+            if (isCorrect) {
+              question_els[i].classList.add("tango-question-correct");
+              ac_count++;
+            } else {
+              question_els[i].classList.add("tango-question-fail");
+              const correct_answer = document.createElement("div");
+              correct_answer.classList.add("tango-correct-answer");
+              correct_answer.textContent = "正解 : " + expectedAnswers[i];
+              question_els[i].appendChild(correct_answer);
+
+              wa_answers.push({
+                idx: i,
+                q: questions[i],
+                yourAns: inputVal,
+                correctAns: expectedAnswers[i],
+              });
+              wa_count++;
+            }
+          }
+
+          showResultOverview(ac_count, wa_count, wa_answers, totalQuestions);
+        });
+      }
+
+      function showResultOverview(
+        ac_count,
+        wa_count,
+        wa_answers,
+        totalQuestions
+      ) {
+        const overview = document.createElement("div");
+        overview.classList.add("tango-result-overview");
+
+        const overview_title = document.createElement("h2");
+        overview_title.classList.add("tango-result-overview-title");
+        overview_title.textContent = "あなたの試験結果";
+
+        const percentage = document.createElement("div");
+        percentage.classList.add("tango-result-percentage");
+
+        const correct_per = document.createElement("div");
+        correct_per.classList.add("tango-result-ac-per");
+        correct_per.style.width = `${Math.floor(
+          (ac_count / totalQuestions) * 100
+        )}%`;
+
+        const wrong_per = document.createElement("div");
+        wrong_per.classList.add("tango-result-wa-per");
+        wrong_per.style.width = `${Math.floor(
+          (wa_count / totalQuestions) * 100
+        )}%`;
+
+        percentage.appendChild(correct_per);
+        percentage.appendChild(wrong_per);
+
+        const accuracy = document.createElement("p");
+        accuracy.classList.add("tango-result-accuracy");
+        accuracy.textContent = `${Math.floor(
+          (ac_count / totalQuestions) * 100
+        )}%`;
+
+        overview.appendChild(overview_title);
+        overview.appendChild(percentage);
+        overview.appendChild(accuracy);
+
+        if (ac_count < totalQuestions) {
+          const wa_prob = document.createElement("div");
+          wa_prob.classList.add("tango-result-wa-ans");
+
+          const wa_prob_title = document.createElement("p");
+          wa_prob_title.classList.add("tango-result-wa-ans-title");
+          wa_prob_title.textContent = "間違えた問題";
+          wa_prob.appendChild(wa_prob_title);
+
+          const line = document.createElement("div");
+          line.classList.add("line");
+          line.classList.add("tango-result-wa-ans-line");
+          line.dataset.color = "red";
+          wa_prob.appendChild(line);
+
+          for (const item of wa_answers) {
+            const wa_prob_list = document.createElement("div");
+            wa_prob_list.classList.add("tango-result-wa-ans-list");
+            wa_prob_list.innerHTML = `
+              <p class="tango-result-wa-ans-list-question">${item.idx + 1}. ${
+              item.q
+            }</p>
+              <p class="tango-result-wa-ans-list-your-ans">Your answer : ${
+                item.yourAns
+              }</p>
+              <p class="tango-result-wa-ans-list-correct">Correct answer : ${
+                item.correctAns
+              }</p>
+            `;
+            wa_prob.appendChild(wa_prob_list);
+          }
+          overview.appendChild(wa_prob);
+        } else {
+          const message = document.createElement("h2");
+          message.classList.add("congra-msg");
+          message.textContent = "Congratulations!";
+          overview.appendChild(message);
+        }
+
+        const close_btn = document.createElement("button");
+        close_btn.classList.add("tango-result-close-btn");
+        close_btn.textContent = "閉じる";
+        overview.appendChild(close_btn);
+
+        document.body.appendChild(overview);
+
+        close_btn.addEventListener("click", () => {
+          overview.remove();
+        });
+      }
+
+      function randomPick(array, N) {
+        const arr = [...array];
+        for (let i = arr.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr.slice(0, N);
+      }
+
+      function error(str, level = "error") {
+        const pop = document.createElement("div");
+        pop.textContent = `"${level.toUpperCase()}" : ${str}`;
+        pop.classList.add("message-pop-up");
+        pop.classList.add(`message-${level}`);
+        document.body.appendChild(pop);
+        setTimeout(() => {
+          pop.style.animation = "slide-out 500ms forwards";
+        }, 2000);
+        setTimeout(() => {
+          pop.remove();
+        }, 2500);
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="google" content="notranslate" />
+    <title>Core1900確認テストツール</title>
+    <link rel="stylesheet" href="../src/style.css" />
+    <link rel="stylesheet" href="../src/core1900/core1900.css" />
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=DM+Serif+Text:ital@0;1&family=Zen+Antique&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Async GSAP -->
+    <script src="../src/utils/async-gsap.js"></script>
+    <!-- diff-match-patch -->
+    <script src="https://unpkg.com/diff-match-patch"></script>
+  </head>
+  <body class="project core1900">
+    <header>
+      <a href="./main.html" class="link-to-main"
+        ><img class="logo" src="../assets/logo.png"
+      /></a>
+    </header>
+    <h1>Core1900確認テストツール</h1>
+    <div class="line"></div>
+    <p>
+      Core1900の英訳をオンライン上で行うためのツールです。<br />
+      なにか問題が起きたなら<a
+        href="https://mail.google.com/mail/?view=cm&fs=1&to=s64005@salesio-gakuin.ac.jp&su=単語テストツールについて&body=坂純ポータル単語テストツールについて"
+        target="_blank"
+        rel="noopener norefferer"
+        >メール</a
+      >にてお問い合わせください。<br />
+    </p>
+    <div class="settings">
+      <form id="settings-form">
+        <label for="range-sampler">組み込みのセットを使う</label>
+        <select id="range-sampler" name="range" required>
+          <option value="none">組み込みのセットを使用しない</option>
+        </select>
+        <div class="range-holder">
+          <label>出題する範囲</label>
+          <!-- ここに範囲の選択肢が動的に追加される -->
+        </div>
+        <div>
+          <label>出題数</label>
+          <div class="count-editor">
+            <button type="button" id="dec">◀</button>
+            <input type="number" min="5" max="20" value="5" id="prob-counter" />
+            <button type="button" id="inc">▶</button>
+          </div>
+        </div>
+        <button type="submit">作成</button>
+      </form>
+    </div>
+    <div class="test">
+      <h2 class="problem-number"></h2>
+      <div class="problem-display"></div>
+      <div class="answer-holder">
+        <span class="label">解答欄</span>
+        <textarea class="answer-sheet"></textarea>
+      </div>
+      <div class="btn-holder">
+        <button type="submit" id="next">提出して次の問題へ</button>
+        <button type="submit" id="judge">採点</button>
+      </div>
+    </div>
+    <div class="result"></div>
+    <script src="../src/utils/dom.js"></script>
+    <script src="../src/core1900/utils.js"></script>
+    <script src="../src/core1900/main.js"></script>
+  </body>
+</html>

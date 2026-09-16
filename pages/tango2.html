@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="google" content="notranslate" />
+    <title>単語テストシミュレーター</title>
+    <link rel="stylesheet" href="../src/style.css" />
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=DM+Serif+Text:ital@0;1&family=Zen+Antique&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="project tango">
+    <header>
+      <a href="./main.html" class="link-to-main"
+        ><img class="logo" src="../assets/logo.png"
+      /></a>
+    </header>
+    <h1>英単語和訳テストシミュレーター</h1>
+    <div class="line"></div>
+    <p>
+      基本は定期テストと同じです。<br />
+      まず、範囲を選択し、作成ボタンをクリックします。出てきた問題では左が問題文、右が解答欄です。解答欄はタップすることで入力できるようになります。<br />
+      TabキーまたはEnterキーで次の解答欄にシフトします。便利なので使ってみてください!<br />
+      全部解けたら一番下の答え合わせボタンを押してください。<br />
+      データの中から基本全探索を用いているので、当たってそうな日本語でもバツにされることは多々ありますがご了承ください。<br />
+      なにか問題が起きたなら<a
+        href="https://mail.google.com/mail/?view=cm&fs=1&to=s64005@salesio-gakuin.ac.jp&su=単語テストツールについて&body=坂純ポータル単語テストツールについて"
+        target="_blank"
+        rel="noopener norefferer"
+        >メール</a
+      >にてお問い合わせください。<br />
+    </p>
+    <div class="info-label">
+      英単語ツールのリンクです。<a
+        class="info-label-link"
+        href="/pages/tango.html"
+        ><span>英単語ツール</span></a
+      >
+    </div>
+    <form id="form1">
+      <label for="fav">単語テストの範囲を選んでください</label>
+      <select id="fav" name="range" required>
+        <option value="">範囲を選択</option>
+      </select>
+      <button type="submit">作成</button>
+      <div class="tango-test-pack"></div>
+      <div class="change-log">
+        <h1>変更履歴</h1>
+        <div class="line"></div>
+        <article>
+          <date>2026/04/26</date>
+          <p>日本語表示バグを修正</p>
+          <version>v1.1.1</version>
+        </article>
+        <article>
+          <date>2026/04/26</date>
+          <p>範囲を追加</p>
+          <version>v1.1.0</version>
+        </article>
+        <article>
+          <date>2025/12/09</date>
+          <p>軽微なバグを修正</p>
+          <version>v1.0.1</version>
+        </article>
+        <article>
+          <date>2025/12/09</date>
+          <p>このサイトを公開</p>
+          <version>v1.0.0</version>
+        </article>
+      </div>
+    </form>
+    <script>
+      if (sessionStorage.getItem("isAllowed") != "Yes") {
+        document.querySelector(".link-to-main").remove();
+      }
+      window.onerror = (e) => {
+        document.body.appendChild(
+          document.createTextNode(e.toString() + e.stack)
+        );
+      };
+      const params = new URLSearchParams(window.location.search);
+      let tango = {};
+      fetch("../data/tango.json")
+        .then((res) => res.json())
+        .then((data) => {
+          tango = data;
+          for (const range of allRange) {
+            const new_words = {};
+            const new_phrase = {};
+            for (const [key, value] of Object.entries(tango[range].words)) {
+              new_words[value] = key.replace(/ |\([^)]*\)/g, "");
+            }
+            for (const [key, value] of Object.entries(tango[range].phrase)) {
+              new_phrase[value] = key.replace(/ |\([^)]*\)/g, "");
+            }
+            tango[range].words = new_words;
+            tango[range].phrase = new_phrase;
+          }
+          /*const div = document.createElement("div");
+          div.textContent = JSON.stringify(tango, null, 2);
+          document.body.appendChild(div);*/
+          error("データが読み込まれました。", "info");
+        });
+
+      const select = document.getElementById("fav");
+      const choice = {
+        "2年3学期③": "2-3-3",
+        "2年3学期④": "2-3-4",
+        "3年1学期⑤": "3-1-5",
+        "3年1学期⑥": "3-1-6",
+        "2年3学期③,④": "2-3-3,2-3-4",
+        "3年1学期⑤,⑥": "3-1-5,3-1-6",
+        "2年3,4 3年5,6": "2-3-3,2-3-4,3-1-5,3-1-6",
+        "3年2学期①": "3-2-1",
+        "3年2学期②": "3-2-2",
+        "3年2学期①,②": "3-2-1,3-2-2",
+        "3年2学期期末試験範囲": "2-3-3,2-3-4,3-1-5,3-1-6,3-2-1,3-2-2",
+        "3年学年末範囲": "3-2-1,3-2-2,3-3-1,3-3-2",
+        "4年1学期①": "4-1-1",
+        "4年1学期②": "4-1-2",
+        "4年1学期中間": "3-3-1,3-3-2,4-1-1,4-1-2",
+      };
+
+      const allRange = [
+        "2-3-3",
+        "2-3-4",
+        "3-1-5",
+        "3-1-6",
+        "3-2-1",
+        "3-2-2",
+        "3-3-1",
+        "3-3-2",
+        "4-1-1",
+        "4-1-2",
+        "others",
+      ];
+
+      for (const [key, value] of Object.entries(choice)) {
+        const option = document.createElement("option");
+        option.value = value;
+        option.textContent = key;
+        select.appendChild(option);
+      }
+
+      document.getElementById("form1").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const val = select.value.split(",");
+        if (tango != null && Object.keys(tango).length > 0) {
+          createTest(val);
+        } else {
+          error(
+            "まだデータが読み込まれていません。数秒待ってから再試行してください。"
+          );
+        }
+      });
+
+      window.addEventListener("keydown", (e) => {
+        const el = e.target;
+        if (!el || !el.classList || !el.classList.contains("tango-answer-box"))
+          return;
+
+        if (e.key === "Enter" || e.key === "Tab") {
+          e.preventDefault();
+
+          const inputs = Array.from(
+            document.querySelectorAll(".tango-answer-box")
+          );
+
+          const idx = inputs.indexOf(el);
+          if (idx === -1) {
+            if (el === document.querySelector("#check")) {
+              el.click();
+            }
+            return;
+          }
+
+          if (!e.shiftKey) {
+            const next = inputs[idx + 1];
+
+            if (next) {
+              next.focus();
+              next.select();
+            } else {
+              handleSubmit();
+            }
+          } else {
+            if (idx <= 0) return;
+            const prev = inputs[idx - 1];
+
+            if (prev) {
+              prev.focus();
+              prev.select();
+            }
+          }
+        }
+      });
+
+      function handleSubmit() {
+        const submit = document.querySelector("#check");
+        if (!submit) return;
+
+        submit.focus();
+      }
+
+      function createTest(range) {
+        const problems = {};
+        for (const el of range) {
+          for (const [key, value] of Object.entries(tango[el].words)) {
+            problems[key] = value;
+          }
+          for (const [key, value] of Object.entries(tango[el].phrase)) {
+            problems[key] = value;
+          }
+        }
+
+        const questions = randomPick([...new Set(Object.keys(problems))], 20);
+
+        createUI(questions, problems);
+      }
+
+      function createUI(questions, problems) {
+        const pre_test = document.querySelector(".tango-test");
+        if (pre_test) {
+          pre_test.remove();
+        }
+        const base = document.createElement("div");
+        base.classList.add("tango-test");
+        for (const query of questions) {
+          const question = document.createElement("div");
+          question.classList.add("tango-question");
+          const problem = document.createElement("div");
+          problem.classList.add("tango-question-prob");
+          problem.translate = "no";
+          problem.textContent = query;
+          const answerBox = document.createElement("input");
+          answerBox.type = "text";
+          answerBox.spellcheck = "false";
+          answerBox.autocorrect = "off";
+          answerBox.autocapitalize = "off";
+          answerBox.autocomplete = "off";
+          answerBox.classList.add("tango-answer-box");
+          question.appendChild(problem);
+          question.appendChild(answerBox);
+          base.appendChild(question);
+          answerBox.setAttribute("spellcheck", "false");
+          answerBox.setAttribute("autocorrect", "off");
+          answerBox.setAttribute("autocapitalize", "off");
+          answerBox.setAttribute("autocomplete", "off");
+          answerBox.setAttribute("data-lt-active", "false");
+        }
+        const submit = document.createElement("button");
+        submit.id = "check";
+        submit.textContent = "答え合わせ";
+        base.appendChild(submit);
+        document.querySelector(".tango-test-pack").appendChild(base);
+
+        submit.addEventListener("click", (e) => {
+          e.preventDefault();
+          submit.remove();
+          const answers = [];
+          for (const el of document.querySelectorAll(".tango-answer-box")) {
+            answers.push(el.value);
+            el.setAttribute("readonly", "true");
+          }
+          const result = answer(questions, answers, problems);
+          const question_els = document.querySelectorAll(".tango-question");
+          let ac_count = 0;
+          let wa_count = 0;
+          const wa_answers = [];
+          for (let i = 0; i < 20; i++) {
+            if (result[i] === true) {
+              question_els[i].classList.add("tango-question-correct");
+              ac_count++;
+            } else {
+              question_els[i].classList.add("tango-question-fail");
+              const correct_answer = document.createElement("div");
+              correct_answer.classList.add("tango-correct-answer");
+              correct_answer.textContent = "正解 : " + result[i];
+              question_els[i].appendChild(correct_answer);
+              wa_answers.push(i);
+              wa_count++;
+            }
+          }
+
+          const overview = document.createElement("div");
+          overview.classList.add("tango-result-overview");
+          const overview_title = document.createElement("h2");
+          overview_title.classList.add("tango-result-overview-title");
+          overview_title.textContent = "あなたの試験結果";
+          const percentage = document.createElement("div");
+          percentage.classList.add("tango-result-percentage");
+          const correct_per = document.createElement("div");
+          correct_per.classList.add("tango-result-ac-per");
+          correct_per.style.width = `${Math.floor((ac_count / 20) * 100)}%`;
+          const wrong_per = document.createElement("div");
+          wrong_per.classList.add("tango-result-wa-per");
+          wrong_per.style.width = `${Math.floor((wa_count / 20) * 100)}%`;
+          percentage.appendChild(correct_per);
+          percentage.appendChild(wrong_per);
+          const accuracy = document.createElement("p");
+          accuracy.classList.add("tango-result-accuracy");
+          accuracy.textContent = `${Math.floor((ac_count / 20) * 100)}%`;
+          if (ac_count < 20) {
+            const wa_prob = document.createElement("div");
+            wa_prob.classList.add("tango-result-wa-ans");
+            const wa_prob_title = document.createElement("p");
+            wa_prob_title.classList.add("tango-result-wa-ans-title");
+            wa_prob_title.textContent = "間違えた問題";
+            wa_prob.appendChild(wa_prob_title);
+            const line = document.createElement("div");
+            line.classList.add("line");
+            line.classList.add("tango-result-wa-ans-line");
+            line.dataset.color = "red";
+            wa_prob.appendChild(line);
+            for (const idx of wa_answers) {
+              const wa_prob_list = document.createElement("div");
+              wa_prob_list.classList.add("tango-result-wa-ans-list");
+              wa_prob_list.innerHTML = `
+                  <p class="tango-result-wa-ans-list-question">${idx + 1}. ${
+                questions[idx]
+              }</p>
+                  <p class="tango-result-wa-ans-list-your-ans">Your answer : ${
+                    answers[idx]
+                  }</p>
+                  <p class="tango-result-wa-ans-list-correct">Correct answer : ${
+                    result[idx]
+                  }</p>
+                  `;
+              wa_prob.appendChild(wa_prob_list);
+            }
+            const close_btn = document.createElement("button");
+            close_btn.classList.add("tango-result-close-btn");
+            close_btn.textContent = "閉じる";
+
+            overview.appendChild(overview_title);
+            overview.appendChild(percentage);
+            overview.appendChild(accuracy);
+            overview.appendChild(wa_prob);
+            overview.appendChild(close_btn);
+            document.body.appendChild(overview);
+
+            close_btn.addEventListener("click", (e) => {
+              overview.remove();
+            });
+          } else {
+            const message = document.createElement("h2");
+            message.classList.add("congra-msg");
+            message.textContent = "Congraturations!";
+            const close_btn = document.createElement("button");
+            close_btn.classList.add("tango-result-close-btn");
+            close_btn.textContent = "閉じる";
+
+            overview.appendChild(overview_title);
+            overview.appendChild(percentage);
+            overview.appendChild(accuracy);
+            overview.appendChild(message);
+            overview.appendChild(close_btn);
+            document.body.appendChild(overview);
+
+            close_btn.addEventListener("click", (e) => {
+              overview.remove();
+            });
+          }
+        });
+      }
+
+      function answer(questions, answers, problems) {
+        const result = [];
+        for (let i = 0; i < questions.length; i++) {
+          const answer = answers[i].trim();
+          if (matchAnswer(problems[questions[i]], answer)) {
+            result.push(true);
+          } else {
+            let ok = false;
+            for (const range of allRange) {
+              if (matchAnswer(tango[range].words[questions[i]], answer)) {
+                ok = true;
+              } else if (
+                matchAnswer(tango[range].phrase[questions[i]], answer)
+              ) {
+                ok = true;
+              }
+              if (ok) break;
+            }
+            if (ok) {
+              result.push(true);
+            } else {
+              result.push(problems[questions[i]]);
+            }
+          }
+        }
+
+        return result;
+      }
+
+      function randomPick(array, N) {
+        if (N > array.length) {
+          throw new Error("N は配列の長さ以下である必要があります");
+        }
+
+        const arr = [...array];
+        for (let i = arr.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+
+        return arr.slice(0, N);
+      }
+
+      function error(str, level = "error") {
+        const pop = document.createElement("div");
+        pop.textContent = `"${level.toUpperCase()}" : ${str}`;
+        pop.classList.add("message-pop-up");
+        pop.classList.add(`message-${level}`);
+        document.body.appendChild(pop);
+        setTimeout(() => {
+          pop.style.animation = "slide-out 500ms forwards";
+        }, 2000);
+
+        setTimeout(() => {
+          pop.remove();
+        }, 2500);
+      }
+
+      function matchAnswer(question, answer) {
+        if (typeof question !== "string" || typeof answer !== "string") {
+          return false;
+        }
+        const setA = new Set(
+          question.split("・").map((s) => s.trim().replace(/~|〜/g, ""))
+        );
+        const setB = new Set(
+          answer.split("・").map((s) => s.trim().replace(/~|〜/g, ""))
+        );
+
+        const AisSubset = [...setA].every((x) => setB.has(x));
+        const BisSubset = [...setB].every((x) => setA.has(x));
+        if (AisSubset || BisSubset) {
+          return true;
+        }
+      }
+    </script>
+  </body>
+</html>
